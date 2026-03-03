@@ -1,0 +1,31 @@
+import { db } from "@/drizzle/db";
+import { UserSettingsTable, UserTable } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
+import { revalidateUserTags } from "./cache/users";
+import { revalidateUserSettingsTags } from "./cache/userSettings";
+
+
+export async function insertUser(user: typeof UserTable.$inferInsert) {
+    await db.insert(UserTable).values(user).onConflictDoNothing();
+    revalidateUserTags(user.id);
+}
+
+
+export async function updateUser(id: string, user: Partial<typeof UserTable.$inferInsert>) {
+    await db.update(UserTable).set(user).where(eq(UserTable.id, id));
+    revalidateUserTags(id);
+}
+
+
+
+export async function deleteUser(id: string) {
+    await db.delete(UserTable).where(eq(UserTable.id, id));
+    revalidateUserTags(id);
+}
+
+
+
+export async function insertUserSettings(userSettings: typeof UserSettingsTable.$inferInsert) {
+    await db.insert(UserSettingsTable).values(userSettings).onConflictDoNothing();
+    revalidateUserSettingsTags(userSettings.userId);
+}

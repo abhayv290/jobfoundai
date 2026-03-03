@@ -10,7 +10,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "ingest": "pnpm dlx inngest-cli@latest dev --no-discovery -u http://localhost:3000/api/inngest"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.38.2",
@@ -19,12 +20,14 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.1",
+    "inngest": "^3.52.5",
     "lucide-react": "^0.575.0",
     "next": "16.1.6",
     "postgres": "^3.4.8",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "svix": "^1.86.0",
     "tailwind-merge": "^3.5.0",
     "zod": "^4.3.6"
   },

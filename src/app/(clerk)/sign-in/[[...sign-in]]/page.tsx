@@ -1,8 +1,14 @@
 import { SignIn } from '@clerk/nextjs'
-import React from 'react'
+import { cookies, headers } from 'next/headers'
+import React, { Suspense } from 'react'
 
-export default function page() {
+
+export default async function page() {
+    await headers();
+    await cookies();
     return (
-        <SignIn />
+        <Suspense>
+            <SignIn />
+        </Suspense>
     )
 }
