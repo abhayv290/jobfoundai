@@ -10,7 +10,6 @@ import { OrgsUserSettings } from "./orgsUserSettings";
 export const OrganizationTable = pgTable('organizations', {
     id: varchar().primaryKey(),
     name: varchar().notNull(),
-    email: varchar().notNull().unique(),
     avatar: varchar().notNull(),
     createdAt,
     updatedAt

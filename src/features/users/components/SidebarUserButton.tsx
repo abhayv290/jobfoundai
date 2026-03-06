@@ -8,7 +8,6 @@ import { SignOutButton } from '@/services/clerk/components/AuthButtons';
 
 const SidebarUserButton = async () => {
     const { user } = await getCurrentUser({ allData: true });
-
     if (!user) {
         return (
             <SignOutButton>

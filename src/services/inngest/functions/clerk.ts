@@ -4,6 +4,7 @@ import { inngest } from "../client";
 import { env } from "@/data/env/server";
 import { NonRetriableError } from "inngest";
 import { deleteUser, insertUser, insertUserSettings, updateUser } from "@/features/users/db/users";
+import { deleteOrganization, insertOrganization, updateOrganization } from "@/features/orgs/db/organizations";
 
 
 function verifyWebHooks({ raw, headers }: { raw: string, headers: Record<string, string> }) {
@@ -11,6 +12,7 @@ function verifyWebHooks({ raw, headers }: { raw: string, headers: Record<string,
 }
 
 
+/** User Webhook Functions  */
 export const clerkCreateUser = inngest.createFunction(
     { id: 'clerk/db-user-create', name: 'Clerk DB User Create' },
     { event: 'clerk/user.created' },
@@ -98,6 +100,75 @@ export const clerkDeleteUser = inngest.createFunction(
                 throw new NonRetriableError('user does not exist');
             }
             await deleteUser(id);
+        })
+    }
+)
+
+/** Organizations Webhook Functions  */
+export const clerkCreateOrganization = inngest.createFunction(
+    { id: 'clerk/db-org-create', name: 'Clerk DB Org Create' },
+    { event: 'clerk/organization.created' },
+    async ({ event, step }) => {
+        await step.run('verify-webhook', async () => {
+            try {
+                verifyWebHooks(event.data)
+            } catch {
+                throw new NonRetriableError('Invalid Webhook',);
+            }
+        })
+
+        await step.run('create-organization', async () => {
+            const orgData = event.data.data;
+            await insertOrganization({
+                id: orgData.id,
+                name: orgData.name,
+                avatar: orgData.image_url ?? '',
+                createdAt: new Date(orgData.created_at),
+                updatedAt: new Date(orgData.updated_at)
+            })
+        })
+    }
+)
+
+export const clerkUpdateOrganization = inngest.createFunction(
+    { id: 'clerk/update-db-org', name: 'Clerk Update db Org' },
+    { event: 'clerk/organization.updated' },
+    async ({ event, step }) => {
+        await step.run('verify-webhook', async () => {
+            try {
+                verifyWebHooks(event.data)
+            } catch {
+                throw new NonRetriableError('Invalid Webhook',);
+            }
+        })
+        await step.run('update-organization', async () => {
+            const orgData = event.data.data;
+            await updateOrganization(orgData.id, {
+                name: orgData.name,
+                avatar: orgData.image_url,
+                updatedAt: new Date(orgData.updated_at)
+            })
+        })
+    }
+)
+
+export const clerkDeleteOrgs = inngest.createFunction(
+    { id: 'clerk/delete-org', name: 'Clerk Delete DB Org' },
+    { event: 'clerk/organization.deleted' },
+    async ({ event, step }) => {
+        await step.run('verify-webhook', async () => {
+            try {
+                verifyWebHooks(event.data)
+            } catch {
+                throw new NonRetriableError('Invalid Webhook',);
+            }
+        })
+        await step.run('delete-organization', async () => {
+            const { id } = event.data.data;
+            if (!id) {
+                throw new NonRetriableError('Organization does not exist');
+            }
+            await deleteOrganization(id);
         })
     }
 )

@@ -2,7 +2,7 @@
 
 import { useIsMobile } from '@/hooks/use-mobile'
 import React, { PropsWithChildren } from 'react'
-import { SidebarTrigger } from './ui/sidebar';
+import { SidebarTrigger } from '../ui/sidebar';
 
 const AppSidebar: React.FC<PropsWithChildren> = ({ children }) => {
     const isMobile = useIsMobile();

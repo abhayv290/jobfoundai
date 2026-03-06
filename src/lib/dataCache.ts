@@ -9,3 +9,7 @@ export const getGlobalTag = (tag: CacheTag) => {
 export const getIdTag = (tag: CacheTag, id: string) => {
     return `id:${id}-${tag}` as const
 }
+
+export const getOrganizationTag = (tag: CacheTag, orgId: string) => {
+    return `orgId:${orgId}-${tag}` as const
+}
