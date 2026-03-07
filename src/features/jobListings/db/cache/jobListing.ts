@@ -1,20 +1,21 @@
 import { getGlobalTag, getIdTag, getOrganizationTag } from "@/lib/dataCache";
+import { revalidateTag } from "next/cache";
 
 
-export const getJobListingGlobalTag = () => {
+export const getJobListingGlobalTag = (): string => {
     return getGlobalTag('jobListings');
 }
 
-export const getJobListingIdTag = (id: string) => {
+export const getJobListingIdTag = (id: string): string => {
     return getIdTag('jobListings', id)
 }
 
 
-export const getJobListingOrgTag = (orgId: string) => {
+export const getJobListingOrgTag = (orgId: string): string => {
     return getOrganizationTag('jobListings', orgId);
 }
-export const revalidateJobListingTags = (id: string, orgId: string) => {
-    getJobListingGlobalTag();
-    getJobListingOrgTag(orgId)
-    getJobListingIdTag(id);
+export const revalidateJobListingCache = (id: string, orgId: string) => {
+    revalidateTag(getJobListingGlobalTag(), 'max')
+    revalidateTag(getJobListingIdTag(id), 'max')
+    revalidateTag(getJobListingOrgTag(orgId), 'max')
 }

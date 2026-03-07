@@ -22,7 +22,7 @@ export default async function EmployerLayout({ children }: { children: React.Rea
                             Job Listings
                         </SidebarGroupLabel>
                         <SidebarGroupAction asChild title='Add Job Listing'>
-                            <Link href={'/employer/job-listings-new'}>
+                            <Link href={'/employer/job-listings/new'}>
                                 <PlusCircle />
                                 <span className='sr-only'>Add Job Listings</span>
                             </Link>

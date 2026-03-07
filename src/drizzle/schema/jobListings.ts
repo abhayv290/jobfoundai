@@ -7,14 +7,14 @@ import { JobApplicationTable } from "./jobApplication";
 
 export const wageIntervals = ['hourly', 'monthly', 'yearly'] as const;
 export const locationRequirements = ['office', 'hybrid', 'remote'] as const;
-export const experiences = ['junior', 'mid-level', 'senior'] as const;
+export const experiences = ['fresher', 'junior', 'mid-level', 'senior'] as const;
 export const jobListingStatus = ['draft', 'published', 'de-listed'] as const;
 export const jobListingType = ['internship', 'part-time', 'full-time'] as const;
 export type WageInterval = typeof wageIntervals[number]
 export type locationRequirement = typeof wageIntervals[number]
-export type Experience = typeof wageIntervals[number]
-export type JobListingStatus = typeof wageIntervals[number]
-export type JobListingType = typeof wageIntervals[number]
+export type Experience = typeof experiences[number]
+export type JobListingStatus = typeof jobListingStatus[number]
+export type JobListingType = typeof jobListingType[number]
 export const wageIntervalEnum = pgEnum('job_listing_wage_intervals', wageIntervals);
 export const locationRequirementsEnum = pgEnum('job_listing_location_requirements', locationRequirements);
 export const experienceEnum = pgEnum('job_listing_experiences', experiences);

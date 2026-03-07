@@ -2,14 +2,14 @@ type CacheTag = 'users' | 'userSettings' | 'organizations' | 'orgsUserSettings' 
 
 
 
-export const getGlobalTag = (tag: CacheTag) => {
+export const getGlobalTag = (tag: CacheTag): string => {
     return `global:${tag}` as const
 }
 
-export const getIdTag = (tag: CacheTag, id: string) => {
+export const getIdTag = (tag: CacheTag, id: string): string => {
     return `id:${id}-${tag}` as const
 }
 
-export const getOrganizationTag = (tag: CacheTag, orgId: string) => {
+export const getOrganizationTag = (tag: CacheTag, orgId: string): string => {
     return `orgId:${orgId}-${tag}` as const
 }
