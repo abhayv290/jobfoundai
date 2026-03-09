@@ -17,6 +17,6 @@ async function OrganizationPage({ searchParams }: Props) {
     const { redirect } = await searchParams;
     const redirectUrl = redirect ?? '/employer';
     return (
-        <OrganizationList hidePersonal hideSlug skipInvitationScreen afterCreateOrganizationUrl={redirectUrl} afterSelectOrganizationUrl={redirectUrl} />
+        <OrganizationList hidePersonal skipInvitationScreen afterCreateOrganizationUrl={redirectUrl} afterSelectOrganizationUrl={redirectUrl} />
     )
 }

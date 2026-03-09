@@ -1,4 +1,4 @@
-import { Experience, JobListingStatus, JobListingType, WageInterval } from "@/drizzle/schema";
+import { JobListingType, WageInterval } from "@/drizzle/schema";
 
 export const formatWageIntervals = (interval: WageInterval): string => {
     switch (interval) {
@@ -27,18 +27,7 @@ export const formatJobType = (type: JobListingType): string => {
 }
 
 
-export const formatJobStatus = (status: JobListingStatus): string => {
-    switch (status) {
-        case "draft":
-            return 'Draft';
-        case "published":
-            return 'Active';
-        case "de-listed":
-            return 'InActive';
-        default:
-            throw new Error('Unknown Job Status')
-    }
-}
+
 
 export const formatWage = (wage: number, wageInterval: WageInterval): string => {
     const formattedWage = new Intl.NumberFormat('en-IN', {

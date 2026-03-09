@@ -4,8 +4,9 @@ import { SidebarMenuButton } from '@/components/ui/sidebar';
 import { LogOutIcon } from 'lucide-react';
 import { SignOutButton } from '@/services/clerk/components/AuthButtons';
 import SidebarOrgsButtonClient from './SidebarOrgsButtonClilent';
+import { FC } from 'react';
 
-const SidebarOrgsButton = async () => {
+const SidebarOrgsButton: FC = async () => {
     const [{ user }, { organizations }] = await Promise.all([getCurrentUser({ allData: true }), getCurrentOrg({ allData: true })]);
     if (!user || !organizations) {
         return (

@@ -1,10 +1,11 @@
-import LoadingSwap from '@/components/LoadingSwap'
 import { Button } from '@/components/ui/button'
 import { getJobListing } from '@/features/jobListings/actions/actions'
 import JobListingBadges from '@/features/jobListings/components/JobListingBadges'
 import MarkdownPartial from '@/features/jobListings/components/MarkdownPartial'
 import MarkdownRenderer from '@/features/jobListings/components/MarkdownRenderer'
+import { DeleteJobListingButton, FeatureToggleButton, StatusUpdateButton } from '@/features/jobListings/components/StageUpdateButtons'
 import { getCurrentOrg } from '@/services/clerk/lib/getCurrentAuth'
+import { hasOrgUserPermission } from '@/services/clerk/lib/orgUserPermissions'
 import { EditIcon } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -22,10 +23,10 @@ export default function page(props: JobListingProps) {
     )
 }
 
-const JobListingPage: FC<JobListingProps> = async ({ params }) => {
+export const JobListingPage: FC<JobListingProps> = async ({ params }) => {
     const { orgId } = await getCurrentOrg();
     if (!orgId) {
-        return null;
+        return notFound();
     }
     const { jobListing } = await params;
 
@@ -45,13 +46,18 @@ const JobListingPage: FC<JobListingProps> = async ({ params }) => {
                 </div>
                 {/* Action buttons only for owners  */}
                 <div className='flex items-center gap-2 empty:-mt-4'>
-                    <Button asChild variant={'outline'}>
+                    {(await hasOrgUserPermission('org:job_listing:create_job_listings')) && <Button asChild variant={'outline'}>
                         <Link href={`/employer/job-listings/${jobListing}/edit`}>
                             <EditIcon /> Edit
                         </Link>
-                    </Button>
-                </div>
+                    </Button>}
+                    <StatusUpdateButton status={myJobListing.status} id={myJobListing.id} />
 
+                    {myJobListing.status === 'published' &&
+                        <FeatureToggleButton isFeatured={myJobListing.isFeatured} id={myJobListing.id} />}
+
+                    <DeleteJobListingButton id={myJobListing.id} />
+                </div>
             </div>
             <hr />
             {/* Job Description Markdown renderer  */}
@@ -61,6 +67,8 @@ const JobListingPage: FC<JobListingProps> = async ({ params }) => {
         </div>
     )
 }
+
+
 
 
 

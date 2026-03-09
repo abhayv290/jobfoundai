@@ -13,3 +13,7 @@ export const getIdTag = (tag: CacheTag, id: string): string => {
 export const getOrganizationTag = (tag: CacheTag, orgId: string): string => {
     return `orgId:${orgId}-${tag}` as const
 }
+
+export const getJobListingTag = (tag: CacheTag, jobListingId: string): string => {
+    return `jobListingId:${jobListingId}-${tag}` as const
+}

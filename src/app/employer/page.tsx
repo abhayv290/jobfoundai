@@ -21,12 +21,11 @@ export default async function page() {
 
 async function getMostRecentJobListing(orgId: string) {
     'use cache'
-
     cacheTag(getJobListingOrgTag(orgId))
+
     return db.query.JobListingTable.findFirst({
         where: eq(JobListingTable.orgId, orgId),
         orderBy: desc(JobListingTable.createdAt),
         columns: { id: true }
     })
-
 }

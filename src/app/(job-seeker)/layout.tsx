@@ -2,9 +2,9 @@ import SidebarClient from '@/components/sidebar/Sidebar'
 import { SidebarNavGroups } from '@/components/sidebar/SidebarNavGroups'
 import SidebarUserButton from '@/features/users/components/SidebarUserButton'
 import { ClipboardIcon, LayoutDashboardIcon, LogInIcon, SearchCodeIcon } from 'lucide-react'
-import React from 'react'
+import { ReactNode } from 'react'
 
-export default function JobSeekerLayout({ children }: { children: React.ReactNode }) {
+export default function JobSeekerLayout({ children }: { children: ReactNode }) {
     return (
         <SidebarClient content={
             <SidebarNavGroups classname='mt-auto' items={[
