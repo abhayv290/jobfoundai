@@ -19,3 +19,26 @@ export const jobListingSchemas = z.object({
     message: 'required for non-remote listings',
     path: ['stateAbbreviation']
 })
+
+
+
+export const searchParamsSchema = z.object({
+    title: z.string().optional().catch(undefined),
+    city: z.string().optional().catch(undefined),
+    state: z.string().optional().catch(undefined),
+    experience: z.enum(experiences).optional().catch(undefined),
+    locationRequirements: z.enum(locationRequirements).optional().catch(undefined),
+    type: z.enum(jobListingType).optional().catch(undefined),
+    jobIds: z.union([z.string(), z.array(z.string())]).transform(a => Array.isArray(a) ? a : [a]).optional().catch([])
+})
+
+export const ANY_VALUE = 'any'
+
+export const jobListingFilterSchemas = z.object({
+    title: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().or(z.literal(ANY_VALUE)).optional(),
+    experience: z.enum(experiences).or(z.literal(ANY_VALUE)).optional(),
+    type: z.enum(jobListingType).or(z.literal(ANY_VALUE)).optional(),
+    locationRequirements: z.enum(locationRequirements).or(z.literal(ANY_VALUE)).optional(),
+})

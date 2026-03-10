@@ -52,7 +52,6 @@ export const JobListingPage: FC<JobListingProps> = async ({ params }) => {
                         </Link>
                     </Button>}
                     <StatusUpdateButton status={myJobListing.status} id={myJobListing.id} />
-
                     {myJobListing.status === 'published' &&
                         <FeatureToggleButton isFeatured={myJobListing.isFeatured} id={myJobListing.id} />}
 

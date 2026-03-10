@@ -1,0 +1,1 @@
+ALTER TYPE "public"."job_listing_experiences" ADD VALUE 'fresher' BEFORE 'junior';

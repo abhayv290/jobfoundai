@@ -23,7 +23,7 @@ const JobListingBadges: FC<JobBadgesProps> = ({ jobListing: {
 }, className }) => {
     const badgeProps = {
         variant: 'outline',
-        className: cn(isFeatured && 'border-primary/40 capitalize', className)
+        className: cn(isFeatured && 'border-primary/40', className)
     } satisfies ComponentProps<typeof Badge>
 
     return (
@@ -47,7 +47,7 @@ const JobListingBadges: FC<JobBadgesProps> = ({ jobListing: {
             <Badge {...badgeProps}   > <GraduationCap /> {experienceLevel}</Badge>
 
             {/* LocationRequirements  */}
-            <Badge {...badgeProps} className='capitalize'> <Building2Icon /> {locationRequirement}</Badge>
+            <Badge {...badgeProps}> <Building2Icon /> {locationRequirement}</Badge>
         </>
     )
 }

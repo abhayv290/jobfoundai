@@ -1,8 +1,16 @@
 
-export default function JobSeekerPage() {
+import JobListingItems from "./JobListingItems";
+
+
+export default function HomePage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
     return (
-        <div>
-            Hello there
+        <div className="m-4">
+            <JobListingItems searchParams={searchParams} />
         </div>
     )
 }
+
+
+
+
+

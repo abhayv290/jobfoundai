@@ -212,7 +212,7 @@ const JobListingForm: FC<Props> = ({ jobListing }) => {
 export default JobListingForm;
 
 import states from '@/data/states.json'
-function StateSelectionItems() {
+export function StateSelectionItems() {
     return Object.entries(states).map(([abbreviation, name]) => (
         <SelectItem key={abbreviation} value={abbreviation} >
             {name}

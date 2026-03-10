@@ -21,7 +21,7 @@ export default function SidebarClient({ content, footerButton, children }: { con
                         </Avatar>
                         <Link href={'/'} className="text-xl  font-bold text-nowrap">JobFoundAi</Link>
                     </SidebarHeader>
-                    <SidebarContent>
+                    <SidebarContent className="no-scrollbar">
                         {content}
                     </SidebarContent>
                     <SidebarFooter>

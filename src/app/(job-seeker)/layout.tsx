@@ -4,16 +4,19 @@ import SidebarUserButton from '@/features/users/components/SidebarUserButton'
 import { ClipboardIcon, LayoutDashboardIcon, LogInIcon, SearchCodeIcon } from 'lucide-react'
 import { ReactNode } from 'react'
 
-export default function JobSeekerLayout({ children }: { children: ReactNode }) {
+export default function JobSeekerLayout({ children, sidebar }: { children: ReactNode, sidebar: ReactNode }) {
     return (
         <SidebarClient content={
-            <SidebarNavGroups classname='mt-auto' items={[
-                { href: '/', icon: <ClipboardIcon />, label: 'JobBoard' },
-                { href: '/ai-search', icon: <SearchCodeIcon />, label: 'AiSearch' },
-                { href: '/employer', icon: <LayoutDashboardIcon />, label: 'Employee Dashboard', authStatus: 'signedIn' },
-                { href: '/sign-in', icon: <LogInIcon />, label: 'Sign In', authStatus: 'signedOut' },
-            ]}>
-            </SidebarNavGroups>
+            <>
+                {sidebar}
+                <SidebarNavGroups classname='mt-auto' items={[
+                    { href: '/', icon: <ClipboardIcon />, label: 'JobBoard' },
+                    { href: '/ai-search', icon: <SearchCodeIcon />, label: 'AiSearch' },
+                    { href: '/employer', icon: <LayoutDashboardIcon />, label: 'Employee Dashboard', authStatus: 'signedIn' },
+                    { href: '/sign-in', icon: <LogInIcon />, label: 'Sign In', authStatus: 'signedOut' },
+                ]}>
+                </SidebarNavGroups>
+            </>
         }
             footerButton={
                 <SidebarUserButton />
