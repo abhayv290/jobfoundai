@@ -40,7 +40,7 @@ const SidebarUserButtonClient: React.FC<{ user: UserType }> = ({ user }) => {
                         Profile
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href={'/user/settings/notifications'}>
+                        <Link href={'/user-settings/notifications'}>
                             <SettingsIcon className='mr-2' />
                             Settings
                         </Link>

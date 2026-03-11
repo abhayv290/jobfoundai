@@ -42,3 +42,7 @@ export const jobListingFilterSchemas = z.object({
     type: z.enum(jobListingType).or(z.literal(ANY_VALUE)).optional(),
     locationRequirements: z.enum(locationRequirements).or(z.literal(ANY_VALUE)).optional(),
 })
+
+export const jobApplicationSchema = z.object({
+    coverLetter: z.string().transform(t => t?.trim() === '' ? null : t).nullable()
+})

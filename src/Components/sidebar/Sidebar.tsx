@@ -19,7 +19,7 @@ export default function SidebarClient({ content, footerButton, children }: { con
                                 {'JF'}
                             </AvatarFallback>
                         </Avatar>
-                        <Link href={'/'} className="text-xl  font-bold text-nowrap">JobFoundAi</Link>
+                        <Link href={'/'} className="text-xl font-bold text-nowrap">JobFoundAi</Link>
                     </SidebarHeader>
                     <SidebarContent className="no-scrollbar">
                         {content}

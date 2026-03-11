@@ -4,6 +4,7 @@ import { SidebarGroup, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
 import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut } from "@/services/clerk/components/AuthButtons";
 import { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 
 
@@ -15,18 +16,20 @@ interface Items {
 }
 interface NavProps {
     items: Items[];
-    classname?: string;
+    className?: string;
 }
-export const SidebarNavGroups: React.FC<NavProps> = ({ items, classname }) => {
+export const SidebarNavGroups: React.FC<NavProps> = ({ items, className }) => {
     const path = usePathname();
     return (
-        <SidebarGroup className={classname}>
+        <SidebarGroup className={cn(className)}>
             {items.map(item => {
                 const html = (
                     <SidebarMenuItem key={item.href}>
                         <SidebarMenuButton asChild isActive={path === item.href}>
-                            <Link href={item.href}>
-                                {item.icon}
+                            <Link href={item.href} className="text-lg">
+                                <span >
+                                    {item.icon}
+                                </span>
                                 <span>{item.label}</span>
                             </Link>
                         </SidebarMenuButton>

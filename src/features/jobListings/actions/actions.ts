@@ -14,6 +14,7 @@ import { hasOrgUserPermission } from "@/services/clerk/lib/orgUserPermissions";
 import { getNextJobListingStatus } from "../lib/utils";
 import { hasReachedFeaturedJobListingLimit, hasReachJobListingLimit } from "@/services/clerk/lib/planFeaturesHelper";
 import { getJobApplicationListingCacheTag } from "@/features/jobApplications/db/cache/applications";
+import { getOrgIdTag } from "@/features/orgs/db/cache/orgs";
 
 
 export async function createJobListing(unSafeData: z.infer<typeof jobListingSchemas>) {
@@ -64,6 +65,26 @@ export async function getJobListing(id: string, orgId: string) {
     })
 }
 
+export async function getJobListingById(id: string) {
+    'use cache'
+    cacheTag(getJobListingIdTag(id))
+
+    const listing = await db.query.JobListingTable.findFirst({
+        where: and(eq(JobListingTable.id, id), eq(JobListingTable.status, 'published')),
+        with: {
+            organizations: {
+                columns: {
+                    id: true,
+                    name: true,
+                    avatar: true
+                }
+            }
+        }
+    })
+    if (listing) cacheTag(getOrgIdTag(listing.organizations.id))
+
+    return listing
+}
 
 
 

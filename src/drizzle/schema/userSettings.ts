@@ -5,7 +5,7 @@ import { relations } from "drizzle-orm";
 
 
 export const UserSettingsTable = pgTable('user_settings', {
-    userId: varchar().notNull().references(() => UserTable.id, { onDelete: 'cascade' }),
+    userId: varchar().primaryKey().references(() => UserTable.id, { onDelete: 'cascade' }),
     newJobEmailNotification: boolean().notNull().default(false),
     aiPrompt: varchar(),
     createdAt,

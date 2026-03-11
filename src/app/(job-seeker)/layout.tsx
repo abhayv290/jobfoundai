@@ -9,7 +9,7 @@ export default function JobSeekerLayout({ children, sidebar }: { children: React
         <SidebarClient content={
             <>
                 {sidebar}
-                <SidebarNavGroups classname='mt-auto' items={[
+                <SidebarNavGroups className='mt-auto' items={[
                     { href: '/', icon: <ClipboardIcon />, label: 'JobBoard' },
                     { href: '/ai-search', icon: <SearchCodeIcon />, label: 'AiSearch' },
                     { href: '/employer', icon: <LayoutDashboardIcon />, label: 'Employee Dashboard', authStatus: 'signedIn' },

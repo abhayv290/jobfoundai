@@ -1,0 +1,1 @@
+ALTER TABLE "user_resumes" ADD PRIMARY KEY ("userId");

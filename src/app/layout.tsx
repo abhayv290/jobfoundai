@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from 'sonner';
+import UploadThingSSR from '@/services/uploadthing/components/UploadThingSSR';
 
 
 const geistSans = Geist({
@@ -34,6 +35,7 @@ export default function RootLayout({
         >
           {children}
           <Toaster />
+          <UploadThingSSR />
         </body>
       </html>
     </ClerkProvider>

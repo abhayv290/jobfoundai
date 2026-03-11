@@ -15,6 +15,7 @@ import { searchParamsSchema } from '@/features/jobListings/actions/schemas';
 import z from 'zod';
 import { cacheTag } from 'next/cache';
 import { getJobListingGlobalTag } from '@/features/jobListings/db/cache/jobListing';
+import { getOrgIdTag } from '@/features/orgs/db/cache/orgs';
 
 interface Props {
     searchParams: Promise<Record<string, string | string[]>>
@@ -41,7 +42,7 @@ const JobListingItems: React.FC<Props> = async ({ searchParams, params }) => {
         <Suspense>
             <div className='container flex flex-col gap-5'>
                 {jobListings.map(listing => (
-                    <Link href={`/employer/job-listings/${listing.id}?${convertSearchParamsToString(search)}`} key={listing.id}>
+                    <Link href={`/job-listings/${listing.id}?${convertSearchParamsToString(search)}`} key={listing.id}>
                         <JobListingCard jobListing={listing} organization={listing.organizations} />
                     </Link>
                 ))}
@@ -119,7 +120,7 @@ const DaySincePosting: React.FC<{ postedAt: Date }> = async ({ postedAt }) => {
     }).format(daysSince, 'days')
 }
 
-export async function getJobListings(searchParams: z.infer<typeof searchParamsSchema>, jobListingId: string | undefined) {
+async function getJobListings(searchParams: z.infer<typeof searchParamsSchema>, jobListingId: string | undefined) {
     'use cache'
     cacheTag(getJobListingGlobalTag())
 
@@ -157,6 +158,7 @@ export async function getJobListings(searchParams: z.infer<typeof searchParamsSc
         with: {
             organizations: {
                 columns: {
+                    id: true,
                     name: true,
                     avatar: true
                 }
@@ -164,6 +166,9 @@ export async function getJobListings(searchParams: z.infer<typeof searchParamsSc
         },
         orderBy: [desc(JobListingTable.isFeatured), desc(JobListingTable.postedAt)]
     })
+    if (data) {
+        data.forEach(item => cacheTag(getOrgIdTag(item.organizations.id)))
+    }
 
     return data;
 }

@@ -45,7 +45,7 @@ export default async function EmployerLayout({ children }: { children: React.Rea
                     <SidebarGroupContent className='group-data-[state=collapsed]:hidden'>
                         <JobListingMenu orgId={orgId} />
                     </SidebarGroupContent>
-                    <SidebarNavGroups classname='mt-auto' items={[
+                    <SidebarNavGroups className='mt-auto' items={[
                         { href: '/', icon: <ClipboardIcon />, label: 'JobBoard' },
                         { href: '/ai-search', icon: <SearchCodeIcon />, label: 'AiSearch' },
                     ]}>
