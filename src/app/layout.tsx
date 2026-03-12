@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "JobFoundAi",
   description: "Ai Job search app to help you land your dream job with ai resume filter and resume setter based on job description",
-  icons: './favicon.ico'
+  // icons: './favicon.ico'
 };
 
 export default function RootLayout({

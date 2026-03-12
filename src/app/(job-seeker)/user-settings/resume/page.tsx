@@ -20,10 +20,10 @@ export default function ResumePage() {
                 <Suspense>
                     <ResumeDetails />
                 </Suspense>
-                <Suspense>
-                    <AiSummaryDetails />
-                </Suspense>
             </Card>
+            <Suspense>
+                <AiSummaryDetails />
+            </Suspense>
         </div>
     )
 }
@@ -58,11 +58,11 @@ async function AiSummaryDetails() {
 
     return <Card>
         <CardHeader className="border-b">
-            <CardTitle>Ai Summary</CardTitle>
+            <CardTitle className="text-2xl font-bold">Ai Summary</CardTitle>
             <CardDescription>AI-generated summary tailored to help you highlight key qualifications and experience</CardDescription>
         </CardHeader>
         <CardContent>
-            <MarkdownRenderer source={userResume.aiSummary} />
+            <MarkdownRenderer source={userResume.aiSummary} className="text-slate-200/80" />
         </CardContent>
     </Card>
 }

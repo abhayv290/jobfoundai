@@ -13,7 +13,7 @@ export const customFileRouter = {
     // Define as many FileRoutes as you like, each with a unique routeSlug
     resumeUploader: f({
         pdf: {
-            maxFileSize: "8MB",
+            maxFileSize: "4MB",
             maxFileCount: 1,
         },
     }, { awaitServerData: true })
@@ -39,9 +39,9 @@ export const customFileRouter = {
                 await uploadThing.deleteFiles(resumeFileKey)
             }
             // Sending the resume file to Ai for Processing
-            // await inngest.send({
-            //     name: 'app/resume.uploaded', user: { id: userId, }
-            // })
+            await inngest.send({
+                name: 'app/resume.uploaded', user: { id: userId, }
+            })
             return { message: 'Resume Uploaded Successfully' };
         }),
 } satisfies FileRouter;

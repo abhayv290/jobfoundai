@@ -29,7 +29,10 @@ export const searchParamsSchema = z.object({
     experience: z.enum(experiences).optional().catch(undefined),
     locationRequirements: z.enum(locationRequirements).optional().catch(undefined),
     type: z.enum(jobListingType).optional().catch(undefined),
-    jobIds: z.union([z.string(), z.array(z.string())]).transform(a => Array.isArray(a) ? a : [a]).optional().catch([])
+    jobIds: z.union([z.string(), z.array(z.string())]).transform((val) => {
+        if (!val) return []
+        return Array.isArray(val) ? val : [val]
+    }).optional()
 })
 
 export const ANY_VALUE = 'any'
@@ -45,4 +48,9 @@ export const jobListingFilterSchemas = z.object({
 
 export const jobApplicationSchema = z.object({
     coverLetter: z.string().transform(t => t?.trim() === '' ? null : t).nullable()
+})
+
+
+export const jobListingAiSearchSchema = z.object({
+    query: z.string().min(1, 'Required')
 })

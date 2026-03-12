@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren, ReactNode, Suspense } from "react"
-import { SignedIn as ClerkSignedIn, SignedOut as ClerkSignedOut, SignOutButton as ClerkSignout } from "@clerk/nextjs"
+import { SignedIn as ClerkSignedIn, SignedOut as ClerkSignedOut, SignOutButton as ClerkSignout, } from "@clerk/nextjs"
 
 export const SignedIn = ({ children }: { children: ReactNode }) => {
     return (
@@ -30,3 +30,4 @@ export const SignOutButton: FC<PropsWithChildren> = ({ children }) => {
         </ClerkSignout>
     </Suspense>)
 }
+

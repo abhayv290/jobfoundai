@@ -3,7 +3,7 @@ import { db } from "@/drizzle/db";
 import { JobApplicationTable, JobListingTable, UserResumeTable } from "@/drizzle/schema";
 import { and, eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
-import { getJobApplicationIdCacheTag } from "./cache/applications";
+import { getJobApplicationIdCacheTag, } from "./cache/applications";
 import { getUserResumeIdTag } from "@/features/users/db/cache/userResume";
 import z from "zod";
 import { getJobListingIdTag } from "@/features/jobListings/db/cache/jobListing";
@@ -62,10 +62,10 @@ export async function createJobApplication(listingId: string, unsafeData: z.infe
     })
 
     //TODO - Ai Generation using ingest
-    // await inngest.send({
-    //     name: 'app/jobApplication.created',
-    //     data: { jobListingId: listing.id, userId }
-    // })
+    await inngest.send({
+        name: 'app/jobApplication.created',
+        data: { jobListingId: listing.id, userId }
+    })
     return {
         error: false,
         message: 'Your Application is Submitted'
@@ -83,4 +83,7 @@ async function getPublicJobListing(id: string) {
         }
     })
 }
+
+
+
 

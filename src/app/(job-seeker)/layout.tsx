@@ -21,7 +21,7 @@ export default function JobSeekerLayout({ children, sidebar }: { children: React
             footerButton={
                 <SidebarUserButton />
             } >
-            <div>
+            <div className='min-h-screen'>
                 {children}
             </div>
         </SidebarClient>

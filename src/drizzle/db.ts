@@ -4,6 +4,17 @@ import postgres from "postgres";
 import * as schema from './schema'
 
 
-const client = postgres(env.DATABASE_URL);
+const client = postgres(env.DATABASE_URL, {
+    onnotice: (msg) => console.log(msg)
+});
 
-export const db = drizzle(client, { schema })
+export const db = (() => {
+    try {
+        return drizzle(client, { schema })
+    } catch (err) {
+        console.error('Failed to initialize Drizzle', err)
+        throw err
+    }
+})()
+
+

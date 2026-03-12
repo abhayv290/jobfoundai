@@ -26,3 +26,10 @@ export async function getUserResumeFileKey(userId: string) {
     })
     return data?.resumeFileKey
 }
+
+export async function updateUserResume(userId: string, data: Partial<Omit<typeof UserResumeTable.$inferInsert, 'userId'>>) {
+    await db.update(UserResumeTable).set(data).where(eq(UserResumeTable.userId, userId))
+
+    //revalidating the caches 
+    revalidateUserResumeCache(userId)
+}

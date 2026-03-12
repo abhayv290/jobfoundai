@@ -120,40 +120,70 @@ const DaySincePosting: React.FC<{ postedAt: Date }> = async ({ postedAt }) => {
     }).format(daysSince, 'days')
 }
 
-async function getJobListings(searchParams: z.infer<typeof searchParamsSchema>, jobListingId: string | undefined) {
+async function getJobListings(
+    searchParams: z.infer<typeof searchParamsSchema>,
+    jobListingId: string | undefined
+) {
     'use cache'
+
     cacheTag(getJobListingGlobalTag())
 
     const whereConditions: (SQL | undefined)[] = []
-    if (searchParams.title) {
-        whereConditions.push(ilike(JobListingTable.title, `%${searchParams.title}%`))
+
+    const parsed = searchParamsSchema.safeParse(searchParams)
+
+    if (!parsed.success) {
+        throw new Error("Invalid search params")
     }
 
-    if (searchParams.city) {
-        whereConditions.push(ilike(JobListingTable.city, `%${searchParams.city}%`))
+    const params = parsed.data
+
+    if (params.title) {
+        whereConditions.push(ilike(JobListingTable.title, `%${params.title}%`))
     }
 
-    if (searchParams.locationRequirements) {
-        whereConditions.push(eq(JobListingTable.locationRequirement, searchParams.locationRequirements))
-    }
-    if (searchParams.experience) {
-        whereConditions.push(eq(JobListingTable.experienceLevel, searchParams.experience))
-    }
-    if (searchParams.state) {
-        whereConditions.push(eq(JobListingTable.stateAbbreviation, searchParams.state))
-    }
-    if (searchParams.type) {
-        whereConditions.push(eq(JobListingTable.type, searchParams.type))
+    if (params.city) {
+        whereConditions.push(ilike(JobListingTable.city, `%${params.city}%`))
     }
 
-    //for jobIds for Ai prompts
-    if (searchParams.jobIds) {
-        whereConditions.push(or(...searchParams.jobIds.map(j => eq(JobListingTable.id, j))))
+    if (params.locationRequirements) {
+        whereConditions.push(
+            eq(JobListingTable.locationRequirement, params.locationRequirements)
+        )
+    }
+
+    if (params.experience) {
+        whereConditions.push(
+            eq(JobListingTable.experienceLevel, params.experience)
+        )
+    }
+
+    if (params.state) {
+        whereConditions.push(
+            eq(JobListingTable.stateAbbreviation, params.state)
+        )
+    }
+
+    if (params.type) {
+        whereConditions.push(eq(JobListingTable.type, params.type))
+    }
+
+    // jobIds (now guaranteed to be array if schema transform is correct)
+    if (params.jobIds?.length) {
+        whereConditions.push(
+            or(...params.jobIds.map(j => eq(JobListingTable.id, j)))
+        )
     }
 
     const data = await db.query.JobListingTable.findMany({
-        where: or((jobListingId ? and(eq(JobListingTable.id, jobListingId), eq(JobListingTable.status, 'published')) : undefined),
-            and(eq(JobListingTable.status, 'published'), ...whereConditions)
+        where: or(
+            jobListingId
+                ? and(
+                    eq(JobListingTable.id, jobListingId),
+                    eq(JobListingTable.status, "published")
+                )
+                : undefined,
+            and(eq(JobListingTable.status, "published"), ...whereConditions)
         ),
         with: {
             organizations: {
@@ -164,11 +194,15 @@ async function getJobListings(searchParams: z.infer<typeof searchParamsSchema>, 
                 }
             }
         },
-        orderBy: [desc(JobListingTable.isFeatured), desc(JobListingTable.postedAt)]
+        orderBy: [
+            desc(JobListingTable.isFeatured),
+            desc(JobListingTable.postedAt)
+        ]
     })
+
     if (data) {
         data.forEach(item => cacheTag(getOrgIdTag(item.organizations.id)))
     }
 
-    return data;
+    return data
 }

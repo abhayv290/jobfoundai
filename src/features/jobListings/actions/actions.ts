@@ -1,11 +1,11 @@
 'use server'
 
 import z from "zod";
-import { jobListingSchemas } from "./schemas";
-import { getCurrentOrg } from "@/services/clerk/lib/getCurrentAuth";
+import { jobListingAiSearchSchema, jobListingSchemas } from "./schemas";
+import { getCurrentOrg, getCurrentUser } from "@/services/clerk/lib/getCurrentAuth";
 import { redirect } from "next/navigation";
 import { insertJobListing, updateJobListing as updateJobListingDB, deleteJobListing as deleteJobListingDB } from "../db/jobListings";
-import { getJobListingIdTag, getJobListingOrgTag } from "../db/cache/jobListing";
+import { getJobListingGlobalTag, getJobListingIdTag, getJobListingOrgTag } from "../db/cache/jobListing";
 import { cacheTag } from "next/cache";
 import { JobApplicationTable, JobListingTable } from "@/drizzle/schema";
 import { db } from "@/drizzle/db";
@@ -15,6 +15,7 @@ import { getNextJobListingStatus } from "../lib/utils";
 import { hasReachedFeaturedJobListingLimit, hasReachJobListingLimit } from "@/services/clerk/lib/planFeaturesHelper";
 import { getJobApplicationListingCacheTag } from "@/features/jobApplications/db/cache/applications";
 import { getOrgIdTag } from "@/features/orgs/db/cache/orgs";
+import { getMatchingJobListings } from "@/services/inngest/ai/getMatchingJob";
 
 
 export async function createJobListing(unSafeData: z.infer<typeof jobListingSchemas>) {
@@ -197,4 +198,56 @@ export async function getJobListingArray(orgId: string) {
     data.forEach(list => cacheTag(getJobApplicationListingCacheTag(list.id)))
 
     return data;
+}
+
+
+export async function getJobListingAiSearchResults(unsafe: z.infer<typeof jobListingAiSearchSchema>): Promise<{ error: true, message: string } | { error: false, jobIds: string[] }> {
+    const { success, data } = jobListingAiSearchSchema.safeParse(unsafe)
+    if (!success) {
+        return {
+            error: true,
+            message: 'Error Processing Your Queries, try more intuitive'
+        }
+    }
+
+    const { userId } = await getCurrentUser()
+    if (!userId) return {
+        error: true,
+        message: 'You need an Account to use Ai Search'
+    }
+
+    const listings = await getPublicJobListings()
+
+    const matchedJobListings = await getMatchingJobListings(data.query, listings, { maxJobCount: 10 })
+
+    if (matchedJobListings.length === 0) {
+        return {
+            error: true,
+            message: 'No matching job found with this query',
+        }
+    }
+    return {
+        error: false,
+        jobIds: matchedJobListings
+    }
+}
+
+async function getPublicJobListings() {
+    'use cache'
+    cacheTag(getJobListingGlobalTag())
+    return await db.query.JobListingTable.findMany({
+        where: eq(JobListingTable.status, 'published'),
+        columns: {
+            id: true,
+            title: true,
+            description: true,
+            wage: true,
+            wageInterval: true,
+            city: true,
+            stateAbbreviation: true,
+            locationRequirement: true,
+            experienceLevel: true,
+            type: true
+        }
+    })
 }

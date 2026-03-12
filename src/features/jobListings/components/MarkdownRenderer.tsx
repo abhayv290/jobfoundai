@@ -7,7 +7,7 @@ import { FC } from 'react'
 
 const MarkdownRenderer: FC<MDXRemoteProps & { className?: string }> = ({ className, options, ...props }) => {
     return (
-        <div className={cn(markdownClassNames, className)}>
+        <div className={cn(markdownClassNames, className, 'prose-invert')}>
             <MDXRemote  {...props} options={{
                 mdxOptions: {
                     remarkPlugins: [remarkGfm, ...(options?.mdxOptions?.remarkPlugins ?? [])],
