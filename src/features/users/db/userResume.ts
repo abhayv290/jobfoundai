@@ -1,3 +1,4 @@
+'use server'
 import { db } from "@/drizzle/db";
 import { UserResumeTable } from "@/drizzle/schema";
 import { revalidateUserResumeCache } from "./cache/userResume";

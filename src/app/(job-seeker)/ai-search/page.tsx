@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentAuth";
 import { SignUpButton } from "@clerk/nextjs";
 import JobListingAiSearchForm from "./JobListingAiSearchForm";
-import { SearchCodeIcon } from "lucide-react";
+import { SparklesIcon } from "lucide-react";
 
 
 
@@ -36,7 +36,7 @@ function AiCard() {
     return (
         <>
             <CardHeader>
-                <CardTitle className="text-xl font-bold flex items-center gap-2"> <SearchCodeIcon /> Ai Search</CardTitle>
+                <CardTitle className="text-xl font-bold flex items-center gap-2"> <SparklesIcon /> Ai Search</CardTitle>
                 <CardDescription>This can take a few seconds to process , so please be patient.</CardDescription>
             </CardHeader>
             <CardContent>

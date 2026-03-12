@@ -54,3 +54,8 @@ export const jobApplicationSchema = z.object({
 export const jobListingAiSearchSchema = z.object({
     query: z.string().min(1, 'Required')
 })
+
+export const notificationSchema = z.object({
+    aiPrompt: z.string().transform(val => val.trim() === '' ? null : val).nullable(),
+    newJobEmailNotification: z.boolean().default(false)
+})

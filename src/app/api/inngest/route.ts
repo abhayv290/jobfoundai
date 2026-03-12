@@ -3,6 +3,7 @@ import { inngest } from "@/services/inngest/client";
 import { clerkCreateOrganization, clerkCreateUser, clerkDeleteOrgs, clerkDeleteUser, clerkUpdateOrganization, clerkUpdateUser } from "@/services/inngest/functions/clerk";
 import { createAiSummary } from "@/services/inngest/functions/resume";
 import { rankApplication } from "@/services/inngest/functions/jobApplicant";
+import { prepareDailyJobNotification, sendDailyEmailNotifications } from "@/services/inngest/functions/emails";
 
 
 // Create an API that serves zero functions
@@ -17,6 +18,8 @@ export const { GET, POST, PUT } = serve({
         clerkDeleteOrgs,
         createAiSummary,
         rankApplication,
+        prepareDailyJobNotification,
+        sendDailyEmailNotifications,
         /* your functions will be passed here later! */
     ],
 });

@@ -30,3 +30,11 @@ export async function insertUserSettings(userSettings: typeof UserSettingsTable.
     await db.insert(UserSettingsTable).values(userSettings).onConflictDoNothing();
     revalidateUserSettingsTags(userSettings.userId);
 }
+
+export async function updateUserNotificationSettings(userId: string, data: Partial<Omit<typeof UserSettingsTable.$inferInsert, 'userId'>>) {
+    await db.insert(UserSettingsTable).values({ userId, ...data }).onConflictDoUpdate({
+        set: data,
+        target: UserSettingsTable.userId
+    })
+    revalidateUserSettingsTags(userId)
+}

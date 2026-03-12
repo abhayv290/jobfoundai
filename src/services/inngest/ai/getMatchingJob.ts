@@ -17,7 +17,7 @@ const listingSchema = z.object({
 })
 const NO_JOBS = 'NO_JOBS'
 export async function getMatchingJobListings(prompt: string, jobListings: z.infer<typeof listingSchema>[],
-    { maxJobCount }: { maxJobCount?: number }
+    { maxJobCount }: { maxJobCount?: number } = {}
 ) {
     const agent = createAgent({
         name: 'Job Matching Agent',

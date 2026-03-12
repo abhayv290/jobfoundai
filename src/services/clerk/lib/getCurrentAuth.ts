@@ -17,7 +17,6 @@ export async function getCurrentUser({ allData = false } = {}) {
 async function getUser(id: string) {
     'use cache'
     cacheTag(getUserIdTag(id));
-    // console.log(" [DB] Fetching fresh user created...");
     return await db.query.UserTable.findFirst({
         where: eq(UserTable.id, id)
     })

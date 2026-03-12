@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { convertSearchParamsToString } from "@/lib/convertSearchParamsToString"
-import { XIcon } from "lucide-react"
+import { Badge, XIcon } from "lucide-react"
 import JobListingBadges from "@/features/jobListings/components/JobListingBadges"
 import MarkdownRenderer from "@/features/jobListings/components/MarkdownRenderer"
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentAuth"
@@ -56,7 +56,6 @@ export default function JobListingHomePage({ params, searchParams }: Props) {
                 }
             >
                 {/* Panel 2: Only Visible on Desktop */}
-                {/* 1. The Handle must be a sibling, NOT a wrapper */}
                 <ResizableHandle withHandle className="w-1 bg-border hover:bg-primary transition-colors" />
                 {/* 2. The Right Panel */}
                 <ResizablePanel id="right" defaultSize={40} minSize={30}>
@@ -98,17 +97,14 @@ const JobListingDetails: FC<Props> = async ({ params, searchParams }) => {
                             {jobListing.organizations.name}
                         </p>
                         {jobListing.postedAt && (
-                            <div className="text-sm text-muted-foreground @min-lg:hidden">
-                                {jobListing.postedAt.toLocaleDateString()}
+                            <div className="text-lg font-semibold">
+                                <Suspense>
+                                    Posted :  <DaySincePosting postedAt={jobListing.postedAt} />
+                                </Suspense>
                             </div>
                         )}
                     </div>
                     <div className="ml-auto flex-items-center gap-4">
-                        {jobListing.postedAt && (
-                            <div className="text-sm text-muted-foreground @max-lg:hidden">
-                                {jobListing.postedAt.toLocaleDateString()}
-                            </div>
-                        )}
                         <Button size={'icon'} variant={'outline'} asChild >
                             <Link href={`/?${convertSearchParamsToString(await searchParams)}`}>
                                 <span className="sr-only">Close</span>
@@ -117,7 +113,7 @@ const JobListingDetails: FC<Props> = async ({ params, searchParams }) => {
                         </Button>
                     </div>
                 </div>
-                <div className='space-x-2 space-y-2'>
+                <div className='space-x-2 space-y-2 ml-5'>
                     <JobListingBadges jobListing={jobListing} className="capitalize  border-slate-300/40" />
                 </div>
                 {/* Job Apply  */}
@@ -131,7 +127,20 @@ const JobListingDetails: FC<Props> = async ({ params, searchParams }) => {
     )
 }
 
+const DaySincePosting: React.FC<{ postedAt: Date }> = async ({ postedAt }) => {
+    await connection();
+    const daysSince = differenceInDays(postedAt, new Date())
 
+    if (!daysSince) {
+        return (
+            <Badge>New</Badge>
+        )
+    }
+    return new Intl.RelativeTimeFormat(undefined, {
+        style: 'narrow',
+        numeric: 'always',
+    }).format(daysSince, 'days')
+}
 
 const ApplyButton: FC<{ id: string }> = async ({ id }) => {
     const { userId } = await getCurrentUser()
