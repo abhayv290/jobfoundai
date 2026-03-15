@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { getJobListing } from '@/features/jobListings/actions/actions'
 import JobListingBadges from '@/features/jobListings/components/JobListingBadges'
 import MarkdownPartial from '@/features/jobListings/components/MarkdownPartial'
@@ -63,6 +64,7 @@ export const JobListingPage: FC<JobListingProps> = async ({ params }) => {
             <MarkdownPartial dialogMarkdown={<MarkdownRenderer source={myJobListing.description} />}
                 mainMarkdown={<MarkdownRenderer className='prose-sm' source={myJobListing.description} />}
                 dialogTitle='description' />
+            <Separator />
         </div>
     )
 }

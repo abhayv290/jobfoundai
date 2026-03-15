@@ -5,6 +5,7 @@ import { env } from "@/data/env/server";
 import { NonRetriableError } from "inngest";
 import { deleteUser, insertUser, insertUserSettings, updateUser } from "@/features/users/db/users";
 import { deleteOrganization, insertOrganization, updateOrganization } from "@/features/orgs/db/organizations";
+import { deleteOrgUserSettings, insertOrgUserSettings } from "@/features/orgs/db/orgUserSettings";
 
 
 function verifyWebHooks({ raw, headers }: { raw: string, headers: Record<string, string> }) {
@@ -169,6 +170,37 @@ export const clerkDeleteOrgs = inngest.createFunction(
                 throw new NonRetriableError('Organization does not exist');
             }
             await deleteOrganization(id);
+        })
+    }
+)
+
+export const clerkCreateOrgMember = inngest.createFunction(
+    { name: 'Clerk Create Organization Member', id: 'clerk-create-org-member' },
+    { event: 'clerk/organizationMembership.created' },
+    async ({ step, event }) => {
+
+        await step.run('create-organization-user-settings', async () => {
+            const userId = event.data.data.public_user_data.user_id
+            const orgId = event.data.data.organization.id
+
+            await insertOrgUserSettings({
+                userId, orgsId: orgId
+            })
+        })
+
+    }
+)
+
+export const clerkDeleteOrgMember = inngest.createFunction(
+    { id: 'clerk-delete-org-member', name: 'Clerk Delete Organization Member' },
+    { event: 'clerk/organizationMembership.deleted' },
+    async ({ step, event }) => {
+
+        await step.run('delete-organization-user-settings', async () => {
+            const userId = event.data.data.public_user_data.user_id
+            const orgId = event.data.data.organization.id
+
+            await deleteOrgUserSettings(userId, orgId)
         })
     }
 )

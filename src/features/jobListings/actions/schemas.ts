@@ -59,3 +59,5 @@ export const notificationSchema = z.object({
     aiPrompt: z.string().transform(val => val.trim() === '' ? null : val).nullable(),
     newJobEmailNotification: z.boolean().default(false)
 })
+
+

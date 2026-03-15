@@ -61,7 +61,7 @@ export async function createJobApplication(listingId: string, unsafeData: z.infe
         jobListingId: listing.id, userId, ...data
     })
 
-    //TODO - Ai Generation using ingest
+
     await inngest.send({
         name: 'app/jobApplication.created',
         data: { jobListingId: listing.id, userId }

@@ -31,7 +31,7 @@ const MarkdownPartial: FC<PartialProps> = ({ mainMarkdown, dialogMarkdown, dialo
     }, [])
     return (
         <>
-            <div ref={markdownRef} className='max-h-100 overflow-hidden relative' >
+            <div ref={markdownRef} className='max-h-60 overflow-hidden relative' >
                 {mainMarkdown}
                 {isOverflowing && (
                     <div className='bg-linear-to-t from-background to-transparent to-50% inset-0 absolute  pointer-event-none' />

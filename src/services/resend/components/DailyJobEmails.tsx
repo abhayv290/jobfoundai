@@ -19,7 +19,7 @@ export default function DailyJobEmails({ userName, jobListings, serverUrl }: {
         <Tailwind config={tailwindConfig}>
             <Html>
                 <Head />
-                <Container className="font-sans">
+                <Container className="font-sans">``
                     <Heading as="h1" >New Jobs </Heading>
                     <Text > Hi , <b>{userName}</b> Here are all the jobs that meets your criteria </Text>
                 </Container>
