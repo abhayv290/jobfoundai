@@ -25,11 +25,7 @@ async function UserSettingComponent() {
     if (!userId || !orgId) {
         return notFound()
     }
-    // const settings = await getOrgUserSettings(userId, orgId)
-    const settings = {
-        newApplicationEmailNotifications: true,
-        minimumRating: 4
-    }
+    const settings = await getOrgUserSettings(userId, orgId)
     console.log('settings', settings)
     return (
         <div className="max-w-3xl mx-auto py-8 px-4">

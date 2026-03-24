@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { UserResumeTable } from "@/drizzle/schema";
 import { env } from "@/data/env/server";
 import { updateUserResume } from "@/features/users/db/userResume";
+import { resumeSummaryPrompt } from "@/data/constants";
 
 export const createAiSummary = inngest.createFunction({
     id: 'create-ai-summary',
@@ -27,7 +28,7 @@ export const createAiSummary = inngest.createFunction({
             model: 'claude-sonnet-4-0',
             defaultParameters: {
                 max_tokens: 2048,
-                temperature: 0.5,
+                temperature: 0.3,
             },
             apiKey: env.CLOUDE_API_KEY
         }),
@@ -41,7 +42,7 @@ export const createAiSummary = inngest.createFunction({
                                 url: userResume.resumeFileUrl
                             }
                         },
-                        { type: 'text', text: 'Summarize the following resume and extract all the following key skills , experiences   and qualifications.The Summary should include all the information that a hiring manage would need to about the candidate in order to determine whether the candidate is good fit for the job or not.The Summary should be formatted as markdown ,do not return any other text .If the file does not look like a resume return the text N/A' }
+                        { type: 'text', text: resumeSummaryPrompt }
                     ]
                 }
             ]

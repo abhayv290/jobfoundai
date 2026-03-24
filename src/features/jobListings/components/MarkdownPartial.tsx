@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { FC, ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 interface PartialProps {
@@ -31,7 +31,7 @@ const MarkdownPartial: FC<PartialProps> = ({ mainMarkdown, dialogMarkdown, dialo
     }, [])
     return (
         <>
-            <div ref={markdownRef} className='max-h-60 overflow-hidden relative' >
+            <div ref={markdownRef} className='max-h-40 overflow-hidden relative' >
                 {mainMarkdown}
                 {isOverflowing && (
                     <div className='bg-linear-to-t from-background to-transparent to-50% inset-0 absolute  pointer-event-none' />
@@ -43,7 +43,7 @@ const MarkdownPartial: FC<PartialProps> = ({ mainMarkdown, dialogMarkdown, dialo
                     <DialogTrigger asChild>
                         <Button variant={'ghost'} className='underline -ml-3'>Read More</Button>
                     </DialogTrigger>
-                    <DialogContent className='md:max-w-3xl lg:max-w-4xl max-h-[98%] overflow-hidden flex flex-col'>
+                    <DialogContent className='md:max-w-3xl lg:max-w-4xl max-h-[98%] overflow-hidden flex flex-col' aria-description={dialogTitle}>
                         <DialogHeader>
                             <DialogTitle aria-describedby={dialogTitle}>
                                 {dialogTitle}

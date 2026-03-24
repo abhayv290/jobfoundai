@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { convertSearchParamsToString } from "@/lib/convertSearchParamsToString"
-import { Badge, XIcon } from "lucide-react"
+import { XIcon } from "lucide-react"
 import JobListingBadges from "@/features/jobListings/components/JobListingBadges"
 import MarkdownRenderer from "@/features/jobListings/components/MarkdownRenderer"
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentAuth"
@@ -22,6 +22,7 @@ import { connection } from "next/server"
 import { differenceInDays } from "date-fns"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import JobApplicationForm from "@/features/jobApplications/components/JobApplicationForm"
+import { Badge } from "@/components/ui/badge"
 
 
 
@@ -133,7 +134,7 @@ const DaySincePosting: React.FC<{ postedAt: Date }> = async ({ postedAt }) => {
 
     if (!daysSince) {
         return (
-            <Badge>New</Badge>
+            <Badge className="py-0 px-2">New</Badge>
         )
     }
     return new Intl.RelativeTimeFormat(undefined, {
@@ -163,8 +164,11 @@ const ApplyButton: FC<{ id: string }> = async ({ id }) => {
         await connection()
         const difference = differenceInDays(application.createdAt, new Date())
         return (
-            <div className="text-muted-foreground text-sm">
-                You Already applied for this job {difference === 0 ? 'Today' : formatter.format(difference, 'days')}
+            <div className="flex flex-wrap gap-3">
+                <div className="text-muted-foreground text-sm">
+                    You Already applied for this job {difference === 0 ? 'Today' : formatter.format(difference, 'days')}
+                </div>
+                <Link href={'/application-status/' + id} className="text-blue-300 underline underline-offset-1 text-sm">See Status</Link>
             </div>
         )
     }

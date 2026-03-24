@@ -4,10 +4,10 @@ import { UserTable } from "./users";
 import { createdAt, updatedAt } from "./schemaHelper";
 import { relations } from "drizzle-orm";
 
-const applications = ['denied', 'interested', 'applied', 'hired', 'interviewed'] as const;
-export type Applications = typeof applications[number];
+export const applicationStages = ['denied', 'interested', 'applied', 'hired', 'interviewed'] as const;
+export type ApplicationStages = typeof applicationStages[number];
 
-export const applicationEnum = pgEnum('applications_enum', applications);
+export const applicationEnum = pgEnum('applications_enum', applicationStages);
 
 export const JobApplicationTable = pgTable('job_applications', {
     jobListingId: uuid().references(() => JobListingTable.id, { onDelete: 'cascade' }).notNull(),

@@ -1,4 +1,5 @@
 import { OrganizationList } from '@clerk/nextjs';
+import { connection } from 'next/server';
 import { Suspense } from 'react'
 
 interface Props {
@@ -14,6 +15,7 @@ export default function page(props: Props) {
 }
 
 async function OrganizationPage({ searchParams }: Props) {
+    await connection()
     const { redirect } = await searchParams;
     const redirectUrl = redirect ?? '/employer';
     return (

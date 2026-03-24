@@ -59,7 +59,7 @@ export default function UserNotificationForm({
                                 strokeWidth={1.5}
                                 className=''
                             /> Ai Prompt</FormLabel>
-                            <FormDescription>Our Ai will use this prompt to filter jobs and send you email notifications that matches your interests</FormDescription>
+                            <FormDescription>Our Ai Agent will use this prompt to filter jobs and send you email notifications that matches your interests</FormDescription>
                             <FormControl>
                                 <Textarea {...field} value={field.value ?? ''} className="min-h-32" placeholder="Describe the jobs you&apos;re looking for.example:I am interested in Remote Fullstack development role with the tech stack next or react + express and pays at least 40k INR per month" />
                             </FormControl>

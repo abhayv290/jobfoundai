@@ -13,7 +13,7 @@ export default function SidebarClient({ content, footerButton, children }: { con
                 <Sidebar collapsible="icon" className="overflow-hidden">
                     <SidebarHeader className="flex-row items-center">
                         <SidebarTrigger />
-                        <Avatar className='ml-2 rounded-lg size-10 bg-slate-700'>
+                        <Avatar className='ml-2 rounded-lg size-10'>
                             <AvatarImage src={'/logo.png'}></AvatarImage>
                             <AvatarFallback className='uppercase bg-primary text-primary-foreground'>
                                 {'JF'}

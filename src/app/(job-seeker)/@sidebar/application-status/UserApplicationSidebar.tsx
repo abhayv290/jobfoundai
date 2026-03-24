@@ -2,24 +2,21 @@
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '@/components/ui/sidebar';
-import { JobListingStatus, JobListingTable } from '@/drizzle/schema'
-import { formatJobStatus } from '@/features/jobListings/components/JobListingBadges';
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { FC } from 'react'
+import { type ApplicationStatus, type UserJobApplication } from '../../application-status/[jobId]/page';
 
-interface JobListing extends Pick<typeof JobListingTable.$inferSelect, 'id' | 'title'> {
-    applicationCount: number;
-}
-const JobListingMenuGroup: FC<{ status: JobListingStatus, jobListings: JobListing[] }> = ({ status, jobListings }) => {
-    const { jobListing } = useParams();
+
+const UserApplicationMenuGroup: FC<{ status: ApplicationStatus, applications: UserJobApplication[] }> = ({ applications, status }) => {
+    const { jobId } = useParams();
     return (
         <SidebarMenu>
-            <Collapsible defaultOpen={status !== 'de-listed' || jobListings.find(job => job.id === jobListing) != null} className='group/collapsible'>
+            <Collapsible defaultOpen={status !== 'applied' || applications.find(apps => apps.jobId === jobId) != null} className='group/collapsible'>
                 <CollapsibleTrigger asChild>
                     <SidebarMenuButton className="hover:bg-accent">
-                        {formatJobStatus(status)}
+                        <span className='capitalize text-md font-semibold ml-2 text-accent-foreground'>{status}</span>
                         <span className='text-2xl ml-auto'>
                             <ChevronRightIcon className=' transition-transform group-data-[state=open]/collapsible:rotate-90' />
                         </span>
@@ -27,8 +24,8 @@ const JobListingMenuGroup: FC<{ status: JobListingStatus, jobListings: JobListin
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                     <SidebarMenuSub>
-                        {jobListings.map(listing => (
-                            <JobListingMenuItem key={listing.id} {...listing} />
+                        {applications.map(apps => (
+                            <JobListingMenuItem key={apps.jobId} {...apps} />
                         ))}
                     </SidebarMenuSub>
                 </CollapsibleContent>
@@ -37,23 +34,23 @@ const JobListingMenuGroup: FC<{ status: JobListingStatus, jobListings: JobListin
     )
 }
 
-export default JobListingMenuGroup
+export default UserApplicationMenuGroup
 
 
-function JobListingMenuItem({ id, title, applicationCount }: JobListing) {
-    const { jobListing } = useParams();
+function JobListingMenuItem({ jobId, jobTittle, totalApplicants }: UserJobApplication) {
+    const params = useParams();
     return (
         <SidebarMenuSubItem>
-            <SidebarMenuSubButton isActive={jobListing === id} asChild>
-                <Link href={`/employer/job-listings/${id}`}>
+            <SidebarMenuSubButton isActive={params?.jobId === jobId} asChild>
+                <Link href={`/application-status/${jobId}`}>
                     <span className='truncate capitalize'>
-                        {title}
+                        {jobTittle}
                     </span>
                 </Link>
             </SidebarMenuSubButton>
-            {applicationCount > 0 && (
+            {totalApplicants > 0 && (
                 <div className='absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted-foreground'>
-                    {applicationCount}
+                    {totalApplicants}
                 </div>
             )}
         </SidebarMenuSubItem>

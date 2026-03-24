@@ -3,8 +3,7 @@ import { db } from "@/drizzle/db";
 import { JobListingTable } from "@/drizzle/schema";
 import { and, count, eq } from "drizzle-orm";
 import { hasPlanFeature } from "./planFeatures";
-import { hasOrgUserPermission } from "./orgUserPermissions";
-import { boolean } from "zod";
+
 
 export const hasReachJobListingLimit = async () => {
     const { orgId } = await getCurrentOrg();

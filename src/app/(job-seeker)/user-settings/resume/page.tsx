@@ -8,6 +8,7 @@ import { getUserResume } from "@/features/jobApplications/db/actions";
 import Link from "next/link";
 import MarkdownRenderer from "@/features/jobListings/components/MarkdownRenderer";
 import { Button } from "@/components/ui/button";
+import { SparkleIcon } from "lucide-react";
 
 export default function ResumePage() {
     return (
@@ -58,7 +59,7 @@ async function AiSummaryDetails() {
 
     return <Card>
         <CardHeader className="border-b">
-            <CardTitle className="text-2xl font-bold">Ai Summary</CardTitle>
+            <CardTitle className="text-2xl font-bold flex gap-2 items-center"><SparkleIcon /> Ai Summary</CardTitle>
             <CardDescription>AI-generated summary tailored to help you highlight key qualifications and experience</CardDescription>
         </CardHeader>
         <CardContent>
