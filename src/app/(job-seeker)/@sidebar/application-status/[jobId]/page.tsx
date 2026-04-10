@@ -13,7 +13,7 @@ export default async function ApplicationStatusSidebar() {
     const applications = await getUserJobApplications(userId)
     if (!applications.length) return null
     return (
-        Object.entries(Object.groupBy(applications, ap => ap.status)).sort(([a], [b]) => sortApplicationByStage(a, b)).map(([status, applications]) => (
+        Object.entries(Object.groupBy(applications, ap => ap.status)).sort(([a], [b]) => sortApplicationByStage(a as ApplicationStatus, b as ApplicationStatus)).map(([status, applications]) => (
             <UserApplicationMenuGroup status={status as ApplicationStatus} key={status} applications={applications} />
         ))
     )

@@ -15,6 +15,7 @@ export const env = createEnv({
         GEMINI_API_KEY: z.string().min(1),
         RESEND_API_KEY: z.string().min(1),
         SERVER_URL: z.string().min(1),
+        NEON_DB_URL: z.string().min(1),
     },
 
     createFinalSchema: (env) => {

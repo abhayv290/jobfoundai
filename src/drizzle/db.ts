@@ -4,7 +4,7 @@ import postgres from "postgres";
 import * as schema from './schema'
 
 
-const client = postgres(env.DATABASE_URL, {
+const client = postgres(env.NEON_DB_URL, {
     onnotice: (msg) => console.log(msg)
 });
 
