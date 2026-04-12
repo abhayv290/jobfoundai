@@ -93,20 +93,19 @@ export const sendDailyEmailNotifications = inngest.createFunction(
         if (!aiPrompt || aiPrompt.trim() === '') {
             matchedJobListings = jobListings
         } else {
-            const matchingIds = await getMatchingJobListings(aiPrompt, jobListings)
+            const matchingIds = await getMatchingJobListings(aiPrompt, jobListings, { maxJobCount: 5 })
             matchedJobListings = jobListings.filter(ls => matchingIds.includes(ls.id))
         }
         if (!matchedJobListings.length) return
 
         await step.run('send-emails', async () => {
             await resend.emails.send({
-                from: 'JobFoundAi <onboarding@send.resend.abhayvii.dev>',
+                from: 'JobFoundAi <onboarding@resend.abhayvii.dev>',
                 to: user.email,
                 subject: 'Daily new Jobs',
                 react: DailyJobEmails({ userName: user.name, jobListings, serverUrl: env.SERVER_URL })
             })
         })
-
     }
 )
 
@@ -199,7 +198,7 @@ export const sendDailyUserApplicationNotification = inngest.createFunction(
 
         await step.run('send-org-email', async () => {
             await resend.emails.send({
-                from: 'JobFoundAi <onboarding@send.resend.abhayvii.dev>',
+                from: 'JobFoundAi <onboarding@resend.abhayvii.dev>',
                 to: user.email,
                 subject: 'Daily New Job  Applications',
                 react: DailyApplicationEmails({ userName: user.name, applications })
