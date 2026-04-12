@@ -9,12 +9,12 @@ export default clerkMiddleware(
             await auth.protect()
         }
     },
-    {
-        frontendApiProxy: {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            enabled: (url) => process.env.NODE_ENV === 'production',
-        },
-    }
+    // {
+    //     frontendApiProxy: {
+    //         // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    //         enabled: (url) => process.env.NODE_ENV === 'production',
+    //     },
+    // }
 )
 
 
