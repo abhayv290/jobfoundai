@@ -2,6 +2,7 @@ import { JobListingTable } from "@/drizzle/schema"
 import { Button, Container, Head, Heading, Html, Section, Tailwind, Text } from '@react-email/components'
 import tailwindConfig from "../config/tailwindConfig"
 import { formatJobListingLocation, formatJobType, formatWage, } from "@/features/jobListings/lib/formatter"
+import { env } from "@/data/env/server"
 
 
 interface Jobs extends Pick<typeof JobListingTable.$inferInsert, 'id' | 'title' | 'city' |
@@ -84,5 +85,5 @@ DailyJobEmails.PreviewProps = {
         }
     ],
     userName: 'Abhay Vi',
-    serverUrl: 'http://localhost:3000'
+    serverUrl: env.SERVER_URL
 } satisfies Parameters<typeof DailyJobEmails>[0]

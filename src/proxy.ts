@@ -3,11 +3,19 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/', '/api/inngest(.*)', '/api/uploadthing(.*)', '/job-listings/(.*)', '/ai-search',]);
 
 
-export default clerkMiddleware(async (auth, req) => {
-    if (!isPublicRoute(req)) {
-        await auth.protect()
+export default clerkMiddleware(
+    async (auth, req) => {
+        if (!isPublicRoute(req)) {
+            await auth.protect()
+        }
+    },
+    {
+        frontendApiProxy: {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            enabled: (url) => process.env.NODE_ENV === 'production',
+        },
     }
-});
+)
 
 
 export const config = {
