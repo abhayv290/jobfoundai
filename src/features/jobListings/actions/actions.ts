@@ -140,7 +140,7 @@ export async function toggleJobListingFeature(id: string) {
         }
     }
     //check feature limit 
-    if (jobListing.isFeatured && !(await hasReachedFeaturedJobListingLimit())) {
+    if (!jobListing.isFeatured && await hasReachedFeaturedJobListingLimit()) {
         return {
             error: true,
             message: 'You hit the limit , Upgrade your plan to feature more Job Listing'
@@ -152,7 +152,9 @@ export async function toggleJobListingFeature(id: string) {
     })
     return {
         error: false,
-        message: 'This Job Listing Featured'
+        message: jobListing.isFeatured
+            ? 'This Job Listing is no longer featured'
+            : 'This Job Listing is now featured'
     }
 }
 

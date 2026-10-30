@@ -8,7 +8,7 @@ export default function ClerkProvider({ children }: { children: React.ReactNode 
     const isDarkMode = useIsDarkMode();
     return (
         <Suspense>
-            <OgClerkProvider appearance={isDarkMode ? { baseTheme: [dark] } : undefined}>
+            <OgClerkProvider appearance={isDarkMode ? { theme: [dark] } : undefined}>
                 {children}
             </OgClerkProvider>
         </Suspense>

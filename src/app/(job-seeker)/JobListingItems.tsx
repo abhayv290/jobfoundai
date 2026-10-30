@@ -7,15 +7,13 @@ import { convertSearchParamsToString } from '@/lib/convertSearchParamsToString';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { differenceInDays } from 'date-fns'
-import { connection } from 'next/server';
-import { Badge } from '@/components/ui/badge';
 import JobListingBadges from '@/features/jobListings/components/JobListingBadges';
 import { searchParamsSchema } from '@/features/jobListings/actions/schemas';
 import z from 'zod';
 import { cacheTag } from 'next/cache';
 import { getJobListingGlobalTag } from '@/features/jobListings/db/cache/jobListing';
 import { getOrgIdTag } from '@/features/orgs/db/cache/orgs';
+import DaysSincePosted from '@/features/jobListings/components/DaysSincePosted';
 
 interface Props {
     searchParams: Promise<Record<string, string | string[]>>
@@ -90,7 +88,7 @@ const JobListingCard: React.FC<ListProps> = ({ jobListing, organization }) => {
                             {jobListing.postedAt && (
                                 <div className='text-sm font-medium text-primary'>
                                     <Suspense fallback={jobListing.postedAt.toLocaleDateString()}>
-                                        <DaySincePosting postedAt={jobListing.postedAt} />
+                                        <DaysSincePosted postedAt={jobListing.postedAt} />
                                     </Suspense>
                                 </div>
                             )}
@@ -105,20 +103,6 @@ const JobListingCard: React.FC<ListProps> = ({ jobListing, organization }) => {
     )
 }
 
-const DaySincePosting: React.FC<{ postedAt: Date }> = async ({ postedAt }) => {
-    await connection();
-    const daysSince = differenceInDays(postedAt, new Date())
-
-    if (!daysSince) {
-        return (
-            <Badge>New</Badge>
-        )
-    }
-    return new Intl.RelativeTimeFormat(undefined, {
-        style: 'narrow',
-        numeric: 'always',
-    }).format(daysSince, 'days')
-}
 
 async function getJobListings(
     searchParams: z.infer<typeof searchParamsSchema>,

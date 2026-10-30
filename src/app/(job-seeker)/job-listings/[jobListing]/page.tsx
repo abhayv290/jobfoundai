@@ -22,7 +22,7 @@ import { connection } from "next/server"
 import { differenceInDays } from "date-fns"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import JobApplicationForm from "@/features/jobApplications/components/JobApplicationForm"
-import { Badge } from "@/components/ui/badge"
+import DaysSincePosted from "@/features/jobListings/components/DaysSincePosted";
 
 
 
@@ -100,7 +100,7 @@ const JobListingDetails: FC<Props> = async ({ params, searchParams }) => {
                         {jobListing.postedAt && (
                             <div className="text-lg font-semibold">
                                 <Suspense>
-                                    Posted :  <DaySincePosting postedAt={jobListing.postedAt} />
+                                    Posted : <DaysSincePosted postedAt={jobListing.postedAt} />
                                 </Suspense>
                             </div>
                         )}
@@ -128,20 +128,6 @@ const JobListingDetails: FC<Props> = async ({ params, searchParams }) => {
     )
 }
 
-const DaySincePosting: React.FC<{ postedAt: Date }> = async ({ postedAt }) => {
-    await connection();
-    const daysSince = differenceInDays(postedAt, new Date())
-
-    if (!daysSince) {
-        return (
-            <Badge className="py-0 px-2">New</Badge>
-        )
-    }
-    return new Intl.RelativeTimeFormat(undefined, {
-        style: 'narrow',
-        numeric: 'always',
-    }).format(daysSince, 'days')
-}
 
 const ApplyButton: FC<{ id: string }> = async ({ id }) => {
     const { userId } = await getCurrentUser()

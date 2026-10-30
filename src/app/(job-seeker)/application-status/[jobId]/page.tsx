@@ -11,7 +11,7 @@ import { eq, sql } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+
 
 interface PageProps {
     params: Promise<{ jobId: string }>
@@ -32,29 +32,28 @@ export default async function ApplicationStatusPage({ params }: PageProps) {
         )
     }
     return (
-        <Suspense>
-            <section className="p-5">
-                <Card className="mx-auto lg:max-w-5xl md:max-w-3xl h-full px-5">
-                    <CardContent className="flex flex-wrap gap-3 items-center justify-between">
-                        <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-semibold">Job Application Status</CardTitle>
-                        <div className="inline-flex gap-3">
-                            <div className="inline-flex items-center gap-1">
-                                <span className="text-6xl font-semibold">{applications.length}</span>
+        <section className="p-5">
+            <Card className="mx-auto lg:max-w-5xl md:max-w-3xl h-full px-5">
+                <CardContent className="flex flex-wrap gap-3 items-center justify-between">
+                    <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-semibold">Job Application Status</CardTitle>
+                    <div className="inline-flex gap-3">
+                        <div className="inline-flex items-center gap-1">
+                            <span className="text-6xl font-semibold">{applications.length}</span>
 
-                                <span >Total <br /> Applies</span>
-                            </div>
-                            {/* vertical column  */}
-                            <div className="bg-slate-500 w-0.5 rounded-xl"></div>
-                            <div className="inline-flex  items-center gap-1">
-                                <span className="text-6xl items-center font-semibold">{applications.filter(a => a.status !== 'applied').length}</span>
-                                <span >Application <br /> Updates</span>
-                            </div>
+                            <span >Total <br /> Applies</span>
                         </div>
-                    </CardContent>
-                </Card>
-                <ApplicationStatusComponent application={jobId === 'recent' ? applications[0] : applications.find(a => a.jobId === jobId)} />
-            </section>
-        </Suspense>
+                        {/* vertical column  */}
+                        <div className="bg-slate-500 w-0.5 rounded-xl"></div>
+                        <div className="inline-flex  items-center gap-1">
+                            <span className="text-6xl items-center font-semibold">{applications.filter(a => a.status !== 'applied').length}</span>
+                            <span >Application <br /> Updates</span>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+            <ApplicationStatusComponent application={jobId === 'recent' ? applications[0] : applications.find(a => a.jobId === jobId)} />
+        </section>
+
     )
 }
 export type ApplicationStatus = 'applied' | 'interested' | 'interviewed' | 'hired' | 'denied'
